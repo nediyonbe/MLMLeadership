@@ -12,7 +12,6 @@ import numpy as np
 import math
 import ctypes #for messages to the user
 import time #for folder name
-print('test')
 
 # =============================================================================
 # FUNCTIONS
