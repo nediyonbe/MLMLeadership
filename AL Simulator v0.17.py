@@ -1,11 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-In this version
-    Clawback rates are added
-    Interface updated
-CHECK: In SL G1 Active count restricted Reps are taken into account 
-    >>> Is it the same logic for QPA and Bad Debt related Commission adjustment calculations?
-Spyder Editor"""
 
 import pandas as pd
 import numpy as np
@@ -318,8 +311,6 @@ def diviner():
     ## IMPORT REP DATA
     #fields = ['YYYYCC', 'ACCOUNT_NUMBER', 'ACCOUNT_KEY', 'STATUS_CODE', 'DISTRICT_NUMBER', 'DIVISION_NAME', 'UPLINE_ACCOUNT_NUMBER',
     #  'LOA', 'QV', 'CV', 'BAD_DEBT', 'PAID_LEVEL', 'BADGE_LEVEL', 'BADGE_LEVEL_PC', 'GRACE_COUNT', 'GRACE_COUNT_PC']
-    #rep_data = pd.read_csv('C:/Users/Public/Documents/Python Scripts/rep_data3_status_1_6.tsv',sep='\t')
-    #rep_data = pd.read_csv('C:/Users/gurkaali/Documents/AL Deep Dive/AL Simulator/rep_data2_single_campaign.tsv', sep='\t')
 
     rep_data = pd.read_csv(en_browse_input.get(), sep='\t')
     rep_data = rep_data.loc[rep_data['STATUS_CODE'].isin([2, 3])]
@@ -462,14 +453,6 @@ def diviner():
             rep_dict[c] = nesty_reps
     ## =============================================================================
         # ## CALCULATE UPLINE 2 & 3
-        # #Upline 2
-        # rep_copy = rep_dict[c][['UPLINE_ACCOUNT_NUMBER']]
-        # rep_2 = pd.merge(rep_dict[c], rep_copy, left_on='UPLINE_ACCOUNT_NUMBER', right_index=True, how='left')
-        # rep_2.rename(columns = {'UPLINE_ACCOUNT_NUMBER_x':'UPLINE','UPLINE_ACCOUNT_NUMBER_y' : 'UPLINE2'}, inplace = True)
-        # #Upline 3
-        # rep_3 = pd.merge(rep_2, rep_copy, left_on='UPLINE2', right_index=True, how='left')
-        # rep_3.rename(columns = {'UPLINE_ACCOUNT_NUMBER':'UPLINE3'}, inplace = True)
-        # rep_dict[c] = rep_3
         rep_3 = rep_dict[c] #with the new function calculating ALL uplines the block above is replaced by this line
     ## =============================================================================
     ## =============================================================================
@@ -1412,31 +1395,3 @@ s.configure("Bold.TButton", font = ('bold'), foreground = 'green')
 button = ttk.Button(mainframe, text = 'CALCULATE', command = validate_logic, style = "Bold.TButton").grid(column = 12, row = 49, columnspan = 2, rowspan = 2)
 
 root.mainloop()
-#TO DOs!!!!!!!!!!!!!!!!
-# UPLOAD CAMPAIGN DATA AND MAKE THE EXE FILE
-# Calculate Bonuses
-# Add rolled up Leader charts
-# Ask user for the user input with 2 options:
-    #use existing preinstalled data
-    #import data from file to select
-# User INPUT
-    # ask user to enter
-        # grace count for Titled and Untitled
-#Validate user entry: 
-    #higher title threshold cannot be less than the lower 
-    #whether a folder for export files selected
-    #etc
-# TAG those who hit the Grace Period limit as REMOVED
-        #Those with Grace = 0 AND Badge = 0 are Removed. Substract that amount from UNT count
-            #1. Add additional field Removed_Bin: Flag removed SLs in Campaign X
-            #2. Add additional field Removed_PC_Bin_Upline1/2/3 in Campaign X+1: Bring the flags from PC.
-            #3. Add fields Upline4-5-6 and calculate: For comm calculations there is need for 3 uplines.
-            #The most extreme can be the removal of all upline 1,2,3
-            #4. For all records where Removed_PC_Bin_Upline1 is flagged, make Upline1 = NULL; repeat this for Upline 2 and 3
-            #5. For all records where Removed_PC_Bin_Upline1 is NULL, Upline1 = Upline2 
-                #>>>> Bu olmaz. Ya o da gittiyse???? Hatta ustunde 10 nesil olsun, onu da gitmisse Upline = ZM olmali.Yukaridaki adimlari da kontrol et
-        #Update the uplines before all G-based calculations
-# If you make the simulation of more than 6 titles, add the OR BLOCK for the Set T6 part
-# Get PC GRACE_COUNT_SIM
-        #If she was removed the PC either exclude her forever unless she gets an actve in her G1
-        # or keep her as if she was re-recruited right after being removed
