@@ -14,7 +14,7 @@ Based on the above criteria, the compensation is calculated for every person. Co
 
 To avoid double payment especially for clients with higher titles, some companies exclude team members above a certain title. That feautre is also available here
 
-![](2019-05-30-17-09-10.png)
+![](2019-05-30-17-40-40.png)
 
 ## Installation
 Use Python along with the following modules: pandas / math / numpy / ctypes / time / ttk / matplotlib
